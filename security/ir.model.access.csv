@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+access_wx_corpuser,wx.corpuser,model_wx_corpuser,,1,1,1,1
+access_wx_corp_config,wx.corp.config,model_wx_corp_config,,1,1,1,1
