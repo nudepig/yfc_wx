@@ -1,4 +1,4 @@
-# coding=utf-8
+# -*- coding: utf-8 -*-
 
 import logging
 
@@ -169,8 +169,7 @@ class wx_corpuser(models.Model):
         new_context['default_model'] = 'wx.corpuser'
         new_context['default_method'] = 'send_text'
         new_context['record_ids'] = self.id
-        print('8'*100)
-        print(new_context)
+
         return {
             'name': u'发送微信消息',
             'type': 'ir.actions.act_window',

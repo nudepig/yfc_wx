@@ -4,6 +4,16 @@ from odoo import models, fields, api
 import json
 import datetime
 
+class SaleOrder(models.Model):
+    _inherit = "sale.order"
+
+    @api.model
+    def create(self, vals):
+        ret = super(SaleOrder, self).create(vals)
+        user_id = vals.get('user_id', None)
+        wxcorp_user_id = self.env['res.users'].browse(user_id).partner_id.wxcorp_user_id
+        self.env['wx.confirm'].sale_order_sent(wxcorp_user_id, ret)
+        return ret
 
 class WxConfirm(models.TransientModel):
 
