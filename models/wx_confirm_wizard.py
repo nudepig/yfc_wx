@@ -3,6 +3,9 @@
 from odoo import models, fields, api
 import json
 import datetime
+import logging
+from odoo.exceptions import ValidationError, UserError
+_logger = logging.getLogger(__name__)
 
 class SaleOrder(models.Model):
     _inherit = "sale.order"
@@ -11,7 +14,10 @@ class SaleOrder(models.Model):
     def create(self, vals):
         ret = super(SaleOrder, self).create(vals)
         user_id = vals.get('user_id', None)
-        wxcorp_user_id = self.env['res.users'].browse(user_id).partner_id.wxcorp_user_id
+        # wxcorp_user_id = self.env['res.users'].browse(user_id).partner_id.wxcorp_user_id
+        wxcorp_user_id = self.env['res.users'].browse(user_id).partner_id.wx_name
+        print('8'*100)
+        print(wxcorp_user_id)
         self.env['wx.confirm'].sale_order_sent(wxcorp_user_id, ret)
         return ret
 
@@ -61,8 +67,64 @@ class WxConfirm(models.TransientModel):
                    "\n订单网址：" + corp_sales_adress.format(sale_order_id)
         #info = json.dumps('你有新的报价单', ensure_ascii=False) + json.dumps('订单号:', ensure_ascii=False) + json.dumps(ret_dict.name)
         #info = json.dumps(info_str, ensure_ascii=False)
-        ret = getattr(record_ids, 'send_text')(info_str)
+        # ret = getattr(record_ids, 'send_text')(info_str)
+        ret = self.send_text(record_ids, info_str)
         return ret
+
+    @api.multi
+    def send_text(self, wn_name, text):
+        from wechatpy.exceptions import WeChatClientException
+        Param = self.env['ir.config_parameter'].sudo()
+
+        try:
+            entry = self.env['wx.corp.config'].corpenv()
+            print("9"*100)
+            print(wn_name)
+            # entry.client.message.send_text(entry.current_agent, obj.userid, text)
+            entry.client.message.send_text(entry.current_agent, wn_name, text)
+        except WeChatClientException as e:
+            _logger.info(u'微信消息发送失败 %s'%e)
+            raise UserError(u'发送失败 %s'%e)
+
+    @api.model
+    def sync_from_remote(self, department_id=1):
+        '''
+        从企业微信通讯录同步
+        '''
+        from wechatpy.exceptions import WeChatClientException
+        try:
+            entry = self.env['wx.corp.config'].corpenv()
+            config = self.env['wx.corp.config'].sudo().get_cur()
+            if not config.Corp_Id:
+                raise ValidationError(u'尚未做企业微信对接配置')
+            users = entry.txl_client.user.list(department_id, fetch_child=True)
+            for info in users:
+                rs = self.env['res.partner'].search([('mobile', '=', info['mobile'])], limit=1).id
+                if rs:
+                    res_partner = {
+                        'wx_name': info['userid']
+                    }
+                    self.sudo().env['res.partner'].browse(rs).write(res_partner)
+        except WeChatClientException as e:
+            raise ValidationError(u'微信服务请求异常，异常码: %s 异常信息: %s' % (e.errcode, e.errmsg))
+
+    @api.multi
+    def sync_from_remote_confirm(self):
+        new_context = dict(self._context) or {}
+        new_context['default_info'] = "此操作可能需要一定时间，确认同步吗？"
+        new_context['default_model'] = 'wx.confirm'
+        new_context['default_method'] = 'sync_from_remote'
+        return {
+            'name': u'确认同步已有企业微信用户至本系统',
+            'type': 'ir.actions.act_window',
+            'res_model': 'wx.confirm',
+            'res_id': None,
+            'view_mode': 'form',
+            'view_type': 'form',
+            'context': new_context,
+            'view_id': self.env.ref('yfc_wx.wx_confirm_view_form').id,
+            'target': 'new'
+        }
 
 
 

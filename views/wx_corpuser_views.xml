@@ -1,69 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-
-        <record id="wx_corpuser_view_tree" model="ir.ui.view">
-            <field name="name">wx.corpuser.view_tree</field>
-            <field name="model">wx.corpuser</field>
-            <field name="type">tree</field>
-            <field name="arch" type="xml">
-                <tree string="企业号用户">
-			 	            <field name="avatarimg"/>
-			 	            <field name="name"/>
-			 	            <field name="userid"/>
-			 	            <field name="email"/>
-			 	            <field name="mobile"/>
-			 	            <field name="gender"/>
-			 	            <field name="position"/>
-			 	            <field name="status"/>
-			 	</tree>
-            </field>
-        </record>
-        <record id="wx_corpuser_view_form" model="ir.ui.view">
-            <field name="name">wx.corpuser.view_form</field>
-            <field name="model">wx.corpuser</field>
-            <field name="type">form</field>
-            <field name="arch" type="xml">
-                <form string="企业号用户" version="7.0" duplicate="0">
-                    <header>
-                    	<button name="send_text_confirm" string="发送微信消息" type="object" attrs="{'invisible': [('id', '=', False)]}"/>
-					</header>
-			 	  <sheet>
-			 	    <group>
-                            <field name="id" invisible="1"/>
-			 	      		<group>
-			 	            <field name="name"/>
-			 	            <field name="alias"/>
-			 	         	<field name="userid" readonly="1"/>
-			 	      		</group>
-			 	      	    <group>
-			 	            <field name="mobile"/>
-			 	            <field name="email"/>
-			 	            <field name="weixinid" readonly="1"/>
-			 	            </group>
-			 	            <group>
-			 	            <field name="position" readonly="1"/>
-			 	            <field name="gender"/>
-			 				</group>
-			 	    </group>
-			 	  </sheet>
-			 	</form>
-            </field>
-        </record>
-        <record id="wx_corpuser_action" model="ir.actions.act_window">
-            <field name="name">用户</field>
-            <field name="res_model">wx.corpuser</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
-            <field name="target">current</field>
-        </record>
         <record id="wx_corpuser_action_server" model="ir.actions.server">
             <field name="name">同步用户</field>
             <field name="condition">True</field>
             <field name="type">ir.actions.server</field>
-            <field name="model_id" ref="model_wx_corpuser"></field>
+            <field name="model_id" ref="model_wx_corp_config"></field>
             <field name="state">code</field>
-            <field name="code">action = env['wx.corpuser'].sync_from_remote_confirm()</field>
+            <field name="code">action = env['wx.confirm'].sync_from_remote_confirm()</field>
         </record>
 
     </data>

@@ -77,16 +77,16 @@ class CorpEntry(EntryBase):
         self.init_txl_client(Corp_Id, Corp_Secret)
         self.current_agent = Corp_Agent
 
-        try:
-            users = env['wx.corpuser'].sudo().search([('last_uuid','!=',None)])
-            for obj in users:
-                if obj.last_uuid_time:
-                    self.recover_uuid(obj.userid, obj.last_uuid, fields.Datetime.from_string(obj.last_uuid_time))
-        except:
-            env.cr.rollback()
-            import traceback;traceback.print_exc()
-
-        print('corp client init: %s %s'%(self.OPENID_UUID, self.UUID_OPENID))
+        # try:
+        #     users = env['wx.corpuser'].sudo().search([('last_uuid','!=',None)])
+        #     for obj in users:
+        #         if obj.last_uuid_time:
+        #             self.recover_uuid(obj.userid, obj.last_uuid, fields.Datetime.from_string(obj.last_uuid_time))
+        # except:
+        #     env.cr.rollback()
+        #     import traceback;traceback.print_exc()
+        #
+        # print('corp client init: %s %s'%(self.OPENID_UUID, self.UUID_OPENID))
 
 def corpenv(env):
     dbname = env.cr.dbname

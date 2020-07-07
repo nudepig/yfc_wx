@@ -2,14 +2,9 @@
 <odoo>
     <data>
         <menuitem id="parent_menu_yfcwx" name="微信"/>
-        <menuitem id="parent_menu_yfcwx_manage" name="企业微信管理" parent="parent_menu_yfcwx"/>
-            <menuitem action="wx_corpuser_action" id="wx_corpuser_menuitem_user" name="用户" parent="parent_menu_yfcwx_manage"/>
-            <menuitem action="wx_corpuser_action_server" id="wx_corpuser_menuitem_server" name="同步用户" parent="parent_menu_yfcwx_manage"/>
-
         <menuitem id="parent_menu_yfcwx_config" name="微信设置" parent="parent_menu_yfcwx"/>
             <menuitem action="wx_corp_config_action" id="wx_corp_config_menuitem" name="企业微信对接配置" parent="parent_menu_yfcwx_config"/>
-
-
+            <menuitem action="wx_corpuser_action_server" id="wx_corpuser_menuitem_server" name="同步用户" parent="parent_menu_yfcwx_config"/>
 
     </data>
 </odoo>

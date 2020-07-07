@@ -9,7 +9,7 @@
             <field name="type">form</field>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='website']" position="after">
-                    <field name="wxcorp_user_id"/> 
+                    <field name="wx_name"/>
                 </xpath>
             </field>
         </record>

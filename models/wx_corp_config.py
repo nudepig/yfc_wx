@@ -27,7 +27,6 @@ class WxCorpConfig(models.Model):
     Corp_Agent = fields.Char('应用 AgentID', default='0')
     Corp_Agent_Secret = fields.Char('Agent Secret')
     #Corp_AccessToken = fields.Char('当前 AccessToken', readonly=True)
-
     Corp_Url = fields.Char('URL', readonly=True, compute='_compute_wx_url', help='请将此URL拷贝填到企业微信官方后台，并确保公网能访问该地址')
     Corp_Token = fields.Char('Token', default=generate_token, help='必须为英文或数字，长度为3-32字符, 系统默认自动生成，也可自行修改')
     Corp_AESKey = fields.Char('EncodingAESKey', default='')
@@ -63,3 +62,5 @@ class WxCorpConfig(models.Model):
         if dbname not in corp_client.CorpEnvDict:
             corp_client.CorpEntry().init(env)
         return corp_client.CorpEnvDict[dbname]
+
+

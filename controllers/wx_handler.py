@@ -67,8 +67,9 @@ class WxCorpHandler(http.Controller):
         ret = ''
         if msg.type in ['text', 'image', 'voice', 'location']:
             #reply = create_reply(msg.content, msg).render()
-            from .handlers.text_handler import kf_handler
-            ret = kf_handler(request, msg)
+            # from .handlers.text_handler import kf_handler
+            # ret = kf_handler(request, msg)
+            ret = ''
         elif msg.type == 'event':
             if msg.event=='subscribe':
                 from .handlers.event_handler import subscribe_handler

@@ -1,15 +1,30 @@
 # coding=utf-8
 import logging
 
-from openerp import models, fields, api
+from odoo import models, fields, api
 
 _logger = logging.getLogger(__name__)
 
 class res_partner(models.Model):
     _inherit = 'res.partner'
-
     wxcorp_user_id = fields.Many2one('wx.corpuser','关联企业号用户')
     # wx_user_id = fields.Many2one('wx.user','关联微信用户')
+    wx_name = fields.Char(string='企业微信账户', store=True, default=None)
+
+    @api.multi
+    def send_text(self, text):
+        from wechatpy.exceptions import WeChatClientException
+        Param = self.env['ir.config_parameter'].sudo()
+        for obj in self:
+            try:
+                entry = self.env['wx.corp.config'].corpenv()
+                print("9"*100)
+                print(obj.wx_name)
+                # entry.client.message.send_text(entry.current_agent, obj.userid, text)
+                entry.client.message.send_text(entry.current_agent, obj.wx_name, text)
+            except WeChatClientException as e:
+                _logger.info(u'微信消息发送失败 %s'%e)
+                raise UserError(u'发送失败 %s'%e)
 
     def send_corp_msg(self, msg):
         entry = self.env['wx.corp.config'].corpenv()
