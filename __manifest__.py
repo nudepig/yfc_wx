@@ -21,21 +21,22 @@
     'application': True,
 
     # any module necessary for this one to work correctly
-    'depends': ['base','website','website_sale','account'],
+    'depends': ['base','website','website_sale','account','auth_oauth'],
 
     # always loaded
     'data': [
+        'data/auth_oauth_data.xml',
+        'views/inherit_web_login.xml',
         'security/res_groups.xml',
         'security/ir.model.access.csv',
-
-        'data/wx_init_data.xml',
-
         'views/res_partner_views.xml',
 
         'views/wx_corp_config_views.xml',
         'views/wx_corpuser_views.xml',
         'views/wx_confirm_views.xml',
         'views/parent_menus.xml',
+
+
 
 
     ],

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="provider_wxcrop_qrcode" model="auth.oauth.provider">
+            <field name="name">企业微信扫码登陆</field>
+            <field name="auth_endpoint">/wechat/open/</field>
+            <field name="scope">企业微信扫码登陆</field>
+            <field name="validation_endpoint">/wechat/open/</field>
+            <field name="data_endpoint">/wechat/open/</field>
+            <field name="css_class">fa fa-fw fa-connectdevelop</field>
+            <field name="body">企业微信-扫码登陆</field>
+            <field name="enabled" eval="True"/>
+        </record>
+
+    </data>
+</odoo>

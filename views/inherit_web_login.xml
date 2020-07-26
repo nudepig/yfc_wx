@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+<!--        <template id="auth_oauth.wechat" inherit_id="web.login" name="OAuth Login Wechat">-->
+<!--            <xpath expr="//button[@type='submit']" position="before">-->
+<!--                <div class="pull-right">-->
+<!--                    <a class="btn btn-link" href="/wechat/open/">企业微信登陆</a>-->
+<!--                </div>-->
+<!--            </xpath>-->
+<!--        </template>-->
+        <template id="wx_login" name="wx login">
+            <t t-call="web.login_layout">
+                 <form class="oe_signup_form">
+                    <p class="alert alert-danger" t-if="error">
+                        <t t-raw="error"/>
+                    </p>
+                    <div class="text-center oe_login_buttons pt-3">
+                        <a t-attf-href="/web/login" class="btn btn-link btn-sm" role="button">使用账号登录</a>
+                    </div>
+                </form>
+
+            </t>
+        </template>
+    </data>
+</odoo>

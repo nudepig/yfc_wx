@@ -31,6 +31,7 @@ class WxCorpConfig(models.Model):
     Corp_Token = fields.Char('Token', default=generate_token, help='必须为英文或数字，长度为3-32字符, 系统默认自动生成，也可自行修改')
     Corp_AESKey = fields.Char('EncodingAESKey', default='')
     corp_sales_adress = fields.Char('销售订单网址', default='https://erp.yunfc.net//web#id={}')
+    wexin_login_url = fields.Char('企业微信可信域名', default='https://erp.yunfc.net')
 
     @api.multi
     def write(self, vals):
