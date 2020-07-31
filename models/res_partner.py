@@ -18,8 +18,7 @@ class res_partner(models.Model):
         for obj in self:
             try:
                 entry = self.env['wx.corp.config'].corpenv()
-                print("9"*100)
-                print(obj.wx_name)
+                
                 # entry.client.message.send_text(entry.current_agent, obj.userid, text)
                 entry.client.message.send_text(entry.current_agent, obj.wx_name, text)
             except WeChatClientException as e:

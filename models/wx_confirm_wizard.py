@@ -16,10 +16,11 @@ class SaleOrder(models.Model):
         user_id = vals.get('user_id', None)
         # wxcorp_user_id = self.env['res.users'].browse(user_id).partner_id.wxcorp_user_id
         wxcorp_user_id = self.env['res.users'].browse(user_id).partner_id.wx_name
-        print('8'*100)
-        print(wxcorp_user_id)
-        self.env['wx.confirm'].sale_order_sent(wxcorp_user_id, ret)
-        return ret
+        if wxcorp_user_id:
+            self.env['wx.confirm'].sale_order_sent(wxcorp_user_id, ret)
+            return ret
+        else:
+            return ret
 
 class WxConfirm(models.TransientModel):
 
@@ -65,21 +66,17 @@ class WxConfirm(models.TransientModel):
                    "\n订单金额：" + str(sale_order_amount_total) + \
                    "\n备注：" + ret_dict.note + \
                    "\n订单网址：" + corp_sales_adress.format(sale_order_id)
-        #info = json.dumps('你有新的报价单', ensure_ascii=False) + json.dumps('订单号:', ensure_ascii=False) + json.dumps(ret_dict.name)
-        #info = json.dumps(info_str, ensure_ascii=False)
-        # ret = getattr(record_ids, 'send_text')(info_str)
+
         ret = self.send_text(record_ids, info_str)
         return ret
 
     @api.multi
     def send_text(self, wn_name, text):
         from wechatpy.exceptions import WeChatClientException
-        Param = self.env['ir.config_parameter'].sudo()
+        #Param = self.env['ir.config_parameter'].sudo()
 
         try:
             entry = self.env['wx.corp.config'].corpenv()
-            print("9"*100)
-            print(wn_name)
             # entry.client.message.send_text(entry.current_agent, obj.userid, text)
             entry.client.message.send_text(entry.current_agent, wn_name, text)
         except WeChatClientException as e:
