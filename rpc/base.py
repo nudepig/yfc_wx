@@ -27,11 +27,14 @@ class EntryBase(object):
         return '%s/%s-%s/%s'%(data_dir, cls_name, key, self.dbname)
 
     def init_data(self, env):
-        from diskcache import Index
+        # from diskcache import Index
         self.dbname = env.cr.dbname
-        self.UUID_OPENID = Index(self.get_path('UUID_OPENID'))
-        self.OPENID_UUID = Index(self.get_path('OPENID_UUID'))
-        self.OPENID_LAST = Index(self.get_path('OPENID_LAST'))
+        # self.UUID_OPENID = Index(self.get_path('UUID_OPENID'))
+        # self.OPENID_UUID = Index(self.get_path('OPENID_UUID'))
+        # self.OPENID_LAST = Index(self.get_path('OPENID_LAST'))
+        self.UUID_OPENID = self.get_path('UUID_OPENID')
+        self.OPENID_UUID = self.get_path('OPENID_UUID')
+        self.OPENID_LAST = self.get_path('OPENID_LAST')
 
     def update_index(self, index, key, data):
         _dict = index[key]

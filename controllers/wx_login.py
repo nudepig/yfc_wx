@@ -19,7 +19,7 @@ class Wechat(http.Controller):
             try:
                 env = api.Environment(cr, SUPERUSER_ID, {})
                 config = env['wx.corp.config'].sudo().search([('id', '=', 1)])[0]
-                if  config:
+                if config:
                     corp_id = config.Corp_Id
                     corp_agent = config.Corp_Agent
                     # host = request.httprequest.environ.get('HTTP_HOST', '')
