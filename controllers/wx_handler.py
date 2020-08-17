@@ -30,11 +30,9 @@ class WxCorpHandler(http.Controller):
     def handle(self, **kwargs):
         entry = request.env['wx.corp.config'].corpenv()
         self.crypto = entry.crypto_handle
-
         msg_signature = request.params.get("msg_signature")
         timestamp = request.params.get("timestamp")
         nonce = request.params.get("nonce")
-
         echo_str = request.params.get('echostr', '')
 
         if request.httprequest.method == 'GET':
@@ -47,9 +45,7 @@ class WxCorpHandler(http.Controller):
                 )
             except InvalidSignatureException:
                 abort(403)
-
             return echo_str
-
         # POST
         msg = None
         try:
@@ -81,7 +77,6 @@ class WxCorpHandler(http.Controller):
             _ret = self.handle_unknown(msg)
             if _ret:
                 ret = _ret
-
         reply = create_reply(ret, msg).render()
         res = self.crypto.encrypt_message(reply, request.params.get("nonce"), request.params.get("timestamp"))
         return res

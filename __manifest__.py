@@ -26,6 +26,7 @@
     # always loaded
     'data': [
         'data/auth_oauth_data.xml',
+        'data/wx_init_data.xml',
         'views/inherit_web_login.xml',
         'security/res_groups.xml',
         'security/ir.model.access.csv',

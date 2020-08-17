@@ -151,7 +151,6 @@ class wx_user(models.Model):
     @api.multi
     def send_text_confirm(self):
         self.ensure_one()
-
         new_context = dict(self._context) or {}
         new_context['default_model'] = 'wx.user'
         new_context['default_method'] = 'send_text'
